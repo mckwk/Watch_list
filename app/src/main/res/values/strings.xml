@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Watchlist</string>
+    <string name="my_movie">my movie</string>
+    <string name="state">State</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="blank_fragment">Blank here</string>
+    <string name="movie_importance">Movie importance</string>
+    <string name="low">LOW</string>
+    <string name="normal">NORMAL</string>
+    <string name="high">HIGH</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="enter_movie_details">Enter movie details</string>
+    <string name="default_movie_title">Movie title</string>
+    <string name="no_desc_msg" />
+    <string name="title_fragment">Title</string>
+    <string name="description_fragment">Description</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph.xml"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.example.mytodo.MovieListFragment"
+        android:label="MovieListFragment"
+        tools:layout="@layout/fragment_movie_list">
+        <action
+            android:id="@+id/action_movieListFragment_to_addMovieFragment"
+            app:destination="@id/addMovieFragment" />
+        <action
+            android:id="@+id/action_movieListFragment_to_displayMovieFragment"
+            app:destination="@id/displayMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMovieFragment"
+        android:name="com.example.mytodo.AddMovieFragment"
+        android:label="fragment_add_movie"
+        tools:layout="@layout/fragment_add_movie">
+        <argument
+            android:name="movieToEdit"
+            app:argType="com.example.mytodo.data.Movie"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="edit"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayMovieFragment"
+        android:name="com.example.mytodo.DisplayMovieFragment"
+        android:label="fragment_display_movie"
+        tools:layout="@layout/fragment_display_movie">
+
+        <argument
+            android:name="movie"
+            app:argType="com.example.mytodo.data.Movie" />
+        <action
+            android:id="@+id/action_displayMovieFragment_to_addMovieFragment"
+            app:destination="@id/addMovieFragment" />
+    </fragment>
+</navigation>
