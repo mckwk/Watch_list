@@ -3,12 +3,13 @@ package com.example.mytodo.data
 object Movies {
     val list: MutableList<Movie> = ArrayList()
 
-    private val COUNT = 10
+    private val COUNT = 1
 
     init {
-        for (i in 1..COUNT) {
-            addMovie(createPlaceholderMovie(i))
-        }
+        addMovie(Movie("1", "Pride and Prejudice", makeDetails(1)))
+        addMovie(Movie("2", "Back to the Future", makeDetails(2)))
+        addMovie(Movie("3", "Shrek", makeDetails(3)))
+
     }
     fun addMovie(movie: Movie) {
         list.add(movie)

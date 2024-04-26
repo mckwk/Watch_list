@@ -1,6 +1,9 @@
 package com.example.mytodo
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import com.example.mytodo.data.Movies
 import com.example.mytodo.data.STATUS
 import com.example.mytodo.databinding.FragmentMovieListBinding
 import com.google.android.material.snackbar.Snackbar
+import java.util.concurrent.TimeUnit
 
 class MovieListFragment : Fragment(), ToDoListListener {
     // connect the fragment_movie_list.xml with MovieListFragment class
@@ -58,15 +62,24 @@ class MovieListFragment : Fragment(), ToDoListListener {
 
     override fun onCheckboxClick(moviePosition: Int) {
         val movie = Movies.list[moviePosition]
-        val newStatusDrawable = when (movie.status) {
-            STATUS.UNWATCHED -> R.drawable.checked.also { movie.status = STATUS.WATCHED }
-            STATUS.WATCHED -> R.drawable.unchecked.also { movie.status = STATUS.UNWATCHED }
+        // Toggle the status of the movie
+        movie.status = if (movie.status == STATUS.UNWATCHED) {
+            STATUS.WATCHED
+        } else {
+            STATUS.UNWATCHED
         }
-        binding.list.adapter?.notifyItemChanged(moviePosition)
+
+        // Notify the adapter that the data has changed
+        binding.list.adapter?.notifyDataSetChanged()
+
+        // Introduce a delay of 1 second before sorting the list
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Reorder the list so that unwatched movies appear on top
+            Movies.list.sortByDescending { it.status }
+            // Notify the adapter of the reordered list
+            binding.list.adapter?.notifyDataSetChanged()
+        }, 500) // Delay of 1 second (1000 milliseconds)
     }
-
-
-
 
 
     override fun onMovieLongClick(moviePosition: Int) {
@@ -100,12 +113,18 @@ class MovieListFragment : Fragment(), ToDoListListener {
     }
 
     private fun deleteDialogPositiveClick(moviePosition: Int) {
-        // remove the movie from the list
-        Movies.list.removeAt(moviePosition)
-        // show a snackbar message to confirm the deletion
-        Snackbar.make(binding.root, "Movie deleted", Snackbar.LENGTH_SHORT).show()
-        // notify the adapter that the data has changed
-        binding.list.adapter?.notifyItemRemoved(moviePosition)
+        // Check if the movie position is within the list bounds
+        if (moviePosition >= 0 && moviePosition < Movies.list.size) {
+            // Remove the movie from the list
+            Movies.list.removeAt(moviePosition)
+            // Notify the adapter that the data has changed
+            binding.list.adapter?.notifyItemRemoved(moviePosition)
+            // Show a snackbar message to confirm the deletion
+            Snackbar.make(binding.root, "Movie deleted", Snackbar.LENGTH_SHORT).show()
+        } else {
+            // Log a warning if the movie position is invalid
+            Log.w("MovieListFragment", "Invalid movie position: $moviePosition")
+        }
     }
 
     private fun deleteDialogNegativeClick(moviePosition: Int) {

@@ -34,6 +34,22 @@ class DisplayMovieFragment : Fragment() {
         }
         binding.displayImportance.setImageResource(statusDrawable)
 
+        // Add click listener to the status icon ImageView
+        binding.displayImportance.setOnClickListener {
+            // Toggle the status of the movie
+            movie.status = if (movie.status == STATUS.UNWATCHED) {
+                STATUS.WATCHED
+            } else {
+                STATUS.UNWATCHED
+            }
+            // Update the status icon drawable
+            val newStatusDrawable = when (movie.status) {
+                STATUS.UNWATCHED -> R.drawable.unchecked
+                STATUS.WATCHED -> R.drawable.checked
+            }
+            binding.displayImportance.setImageResource(newStatusDrawable)
+        }
+
         binding.displayEdit.setOnClickListener {
             // create an action to navigate to the AddMovieFragment with the displayed movie
             val actionEditMovie =
@@ -47,4 +63,5 @@ class DisplayMovieFragment : Fragment() {
             findNavController().navigate(actionEditMovie)
         }
     }
+
 }
