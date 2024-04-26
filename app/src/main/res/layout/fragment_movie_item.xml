@@ -27,5 +27,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/circle_drawable_green" />
+        app:srcCompat="@drawable/unchecked" />
 </androidx.constraintlayout.widget.ConstraintLayout>

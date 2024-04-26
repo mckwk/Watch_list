@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytodo.data.Movies
+import com.example.mytodo.data.STATUS
 import com.example.mytodo.databinding.FragmentMovieListBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,7 +28,8 @@ class MovieListFragment : Fragment(), ToDoListListener {
             layoutManager = LinearLayoutManager(context)
             adapter = MyMovieRecyclerViewAdapter(
                 Movies.list,
-                this@MovieListFragment
+                this@MovieListFragment,
+                R.drawable.unchecked // Pass the drawable resource ID
             ) // adapter is responsible for displaying the data
         }
         return binding.root
@@ -40,6 +42,7 @@ class MovieListFragment : Fragment(), ToDoListListener {
             // Navigate to the AddMovieFragment with action id
             findNavController().navigate(R.id.action_movieListFragment_to_addMovieFragment)
         }
+
     }
 
     override fun onMovieClick(moviePosition: Int) {
@@ -52,6 +55,18 @@ class MovieListFragment : Fragment(), ToDoListListener {
         // we do not use the id of the action in this case
         findNavController().navigate(actionMovieListFragmentToDisplayMovieFragment)
     }
+
+    override fun onCheckboxClick(moviePosition: Int) {
+        val movie = Movies.list[moviePosition]
+        val newStatusDrawable = when (movie.status) {
+            STATUS.UNWATCHED -> R.drawable.checked.also { movie.status = STATUS.WATCHED }
+            STATUS.WATCHED -> R.drawable.unchecked.also { movie.status = STATUS.UNWATCHED }
+        }
+        binding.list.adapter?.notifyItemChanged(moviePosition)
+    }
+
+
+
 
 
     override fun onMovieLongClick(moviePosition: Int) {

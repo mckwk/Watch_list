@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mytodo.data.IMPORTANCE
+import com.example.mytodo.data.STATUS
 import com.example.mytodo.data.Movie
 import com.example.mytodo.databinding.FragmentMovieItemBinding
 
 // Adapter is responsible for managing the display of the list –binding data with the views
 class MyMovieRecyclerViewAdapter(
     private val values: List<Movie>,
-    private val eventListener: ToDoListListener
+    private val eventListener: ToDoListListener,
+    private val statusDrawable: Int
 ):RecyclerView.Adapter<MyMovieRecyclerViewAdapter.ViewHolder>()
 {
     // The ViewHolder class is a container for the views in the recycler view item
@@ -45,31 +46,33 @@ class MyMovieRecyclerViewAdapter(
 
 
     override fun onBindViewHolder(holder: MyMovieRecyclerViewAdapter.ViewHolder, position: Int) {
-        // The method binds (connects) the data to the views in the view holder visible to the user
+        val movie = values[position] // Get the movie at the current position
 
-        val movie = values[position] // get the movie at the current position
-
-        // select the drawable resource for image view based on importance of the movie
-        val importanceImage = when(movie.importance){
-            IMPORTANCE.LOW -> R.drawable.circle_drawable_green
-            IMPORTANCE.NORMAL -> R.drawable.circle_drawable_orange
-            IMPORTANCE.HIGH -> R.drawable.circle_drawable_red
+        // Select the drawable resource for image view based on the importance of the movie
+        val statusImage = when (movie.status) {
+            STATUS.UNWATCHED -> R.drawable.unchecked
+            STATUS.WATCHED -> R.drawable.checked
         }
 
-        // set the image view and text view with movie data
-        holder.imgView.setImageResource(importanceImage)
+        // Set the image view and text view with movie data
+        holder.imgView.setImageResource(statusImage)
         holder.contentView.text = movie.title
 
-
-        // set the click and long click listeners for the view holder
+        // Set the click and long click listeners for the view holder
         holder.itemContainer.setOnClickListener {
             eventListener.onMovieClick(position)
         }
         holder.itemContainer.setOnLongClickListener {
             eventListener.onMovieLongClick(position)
-            return@setOnLongClickListener true // consume the long click event
+            true // Consume the long click event
+        }
+
+        // Set click listener for the checkbox
+        holder.imgView.setOnClickListener {
+            eventListener.onCheckboxClick(position)
         }
     }
+
 
     override fun getItemCount(): Int {
         return values.size

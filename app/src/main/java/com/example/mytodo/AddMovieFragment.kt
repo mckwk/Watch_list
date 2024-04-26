@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.mytodo.data.IMPORTANCE
+import com.example.mytodo.data.STATUS
 import com.example.mytodo.data.Movie
 import com.example.mytodo.data.Movies
 import com.example.mytodo.databinding.FragmentAddMovieBinding
@@ -27,13 +27,11 @@ class AddMovieFragment : Fragment() {
         // Set the title and description EditText fields with the movie to edit  }
         // (only if it's not null)
         binding.titleInput.setText(args.movieToEdit?.title)
-        binding.descriptionInput.setText(args.movieToEdit?.description)
         // Set the importance radio button with the movie to edit (only if it's not null)
-        when (args.movieToEdit?.importance) {
-            IMPORTANCE.LOW -> binding.lowRadioButton.isChecked = true
-            IMPORTANCE.NORMAL -> binding.normalRadioButton.isChecked = true
-            IMPORTANCE.HIGH -> binding.highRadioButton.isChecked = true
-            else -> binding.normalRadioButton.isChecked = true
+        when (args.movieToEdit?.status) {
+            STATUS.WATCHED -> binding.watchedRadioButton.isChecked = true
+            STATUS.UNWATCHED -> binding.unwatchedRadioButton.isChecked = true
+            else -> binding.unwatchedRadioButton.isChecked = true
         }
         return binding.root
     }   
@@ -47,22 +45,19 @@ class AddMovieFragment : Fragment() {
     private fun saveMovie() {
         // Get the values from data fields on the screen
         var title: String = binding.titleInput.text.toString()
-        var description: String = binding.descriptionInput.text.toString()
-        val importance = when (binding.importanceGroup.checkedRadioButtonId) {
-            R.id.low_radioButton -> IMPORTANCE.LOW
-            R.id.normal_radioButton -> IMPORTANCE.NORMAL
-            R.id.high_radioButton -> IMPORTANCE.HIGH
-            else -> IMPORTANCE.NORMAL
+        val STATUS = when (binding.importanceGroup.checkedRadioButtonId) {
+            R.id.unwatched_radioButton -> STATUS.UNWATCHED
+            R.id.watched_radioButton -> STATUS.WATCHED
+            else -> STATUS.UNWATCHED
         }
         // Handle missing EditText input
         if (title.isEmpty()) title = getString(R.string.default_movie_title) + "${Movies.list.size + 1}"
-        if (description.isEmpty()) description = getString(R.string.no_desc_msg)
         // Create a new Movie item based on input values
         val movieItem = Movie(
-            { title + description }.hashCode().toString(),
+            { title}.hashCode().toString(),
             title,
-            description,
-            importance
+            title,
+            STATUS
         )
         if(!args.edit) {
             // Add the new movie to the list of movies

@@ -4,10 +4,9 @@
     <string name="state">State</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="blank_fragment">Blank here</string>
-    <string name="movie_importance">Movie importance</string>
-    <string name="low">LOW</string>
-    <string name="normal">NORMAL</string>
-    <string name="high">HIGH</string>
+    <string name="movie_importance">Movie status</string>
+    <string name="low">WATCHED</string>
+    <string name="normal">UNWATCHED</string>
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="enter_movie_details">Enter movie details</string>

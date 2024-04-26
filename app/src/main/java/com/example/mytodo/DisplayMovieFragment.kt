@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.mytodo.data.IMPORTANCE
+import com.example.mytodo.data.STATUS
 import com.example.mytodo.databinding.FragmentDisplayMovieBinding
 
 class DisplayMovieFragment : Fragment() {
@@ -27,14 +27,12 @@ class DisplayMovieFragment : Fragment() {
         // get the movie from the arguments and display the movie details
         val movie = args.movie
         binding.displayTitle.text = movie.title
-        binding.displayDescription.text = movie.description
         // select the drawable resource for the image view based on the importance of the movie
-        val importanceDrawable = when (movie.importance) {
-            IMPORTANCE.LOW -> R.drawable.circle_drawable_green
-            IMPORTANCE.NORMAL -> R.drawable.circle_drawable_orange
-            IMPORTANCE.HIGH -> R.drawable.circle_drawable_red
+        val statusDrawable = when (movie.status) {
+            STATUS.UNWATCHED -> R.drawable.unchecked
+            STATUS.WATCHED -> R.drawable.checked
         }
-        binding.displayImportance.setImageResource(importanceDrawable)
+        binding.displayImportance.setImageResource(statusDrawable)
 
         binding.displayEdit.setOnClickListener {
             // create an action to navigate to the AddMovieFragment with the displayed movie
@@ -50,4 +48,3 @@ class DisplayMovieFragment : Fragment() {
         }
     }
 }
-
